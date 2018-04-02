@@ -15,7 +15,7 @@ class CustomPage extends Page
 	view()
 	{
 		return m('div', {class: 'head text-center'}, [
-			m('img', {src: '/assets/img/logo.png', style: 'height: 128px; width: 128px;'}),
+			m('img', {src: '/assets/images/logo.png', style: 'height: 128px; width: 128px;'}),
 			m('h1', 'Muck Man'),
 			m('span', {class: 'small-text'}, 'no muck allowed'),
 			m('div', {class: 'btn-group'}, [

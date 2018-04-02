@@ -40,6 +40,15 @@ class Website
 							rel: 'stylesheet',
 							href: `/build/${manifest['main.css']}`,
 							type: 'text/css'
+						}),
+						m('meta', {charset: 'UTF-8'}),
+						m('meta', {
+							property: 'description',
+							content: 'Muck Cleaner'
+						}),
+						m('meta', {
+							property: 'og:image',
+							content: '/assets/images/logo.png'
 						})
 					]),
 					m('body', [
