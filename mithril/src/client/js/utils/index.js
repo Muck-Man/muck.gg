@@ -1,5 +1,5 @@
 String.prototype.toTitleCase = function() {
-	return this.split(' ').map((word) => {
+	return this.replace(/_/g, ' ').split(' ').map((word) => {
 		return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
 	}).join(' ');
 };

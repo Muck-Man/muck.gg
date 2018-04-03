@@ -31,4 +31,57 @@
 			}
 		}
 	}
+
+	.stats {
+		@extend .d-flex;
+		@extend .flex-column;
+		@extend .justify-content-start;
+		@extend .text-center;
+
+		margin: 25px 0;
+
+		.stat {
+			@extend .d-flex;
+			@extend .flex-column;
+			@extend .align-items-center;
+
+			.title {
+				span {
+					color: rgb(114, 107, 87);
+				}
+			}
+
+			.sections {
+				@extend .d-flex;
+				@extend .flex-row;
+				@extend .justify-content-around;
+				@extend .flex-wrap;
+
+				.section {
+					@extend .d-flex;
+					@extend .flex-column;
+					@extend .align-items-center;
+					@extend .justify-content-center;
+
+					background-color: rgb(32, 34, 37);
+					margin: 10px;
+					border-radius: 10px;
+					height: 150px;
+					width: 150px;
+
+					.percent {
+						color: rgb(199, 204, 209);
+						margin: 5px 0;
+					}
+
+					.progress {
+						width: 90%;
+						.progress-bar {
+							background-color: rgb(54, 57, 62);
+						}
+					}
+				}
+			}
+		}
+	}
 }

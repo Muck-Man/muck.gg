@@ -1,3 +1,4 @@
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
@@ -34,6 +35,7 @@ module.exports = {
 	},
 	mode: (process.env.NODE_ENV && process.env.NODE_ENV.toLowerCase()) || 'development',
 	plugins: [
+		new CleanWebpackPlugin(['./*.*'], {root: DIR.BUILD}),
 		new MiniCssExtractPlugin({filename: '[hash].css'}),
 		new ManifestPlugin({filename: 'manifest.json'})
 	]
