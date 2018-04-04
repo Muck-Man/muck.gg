@@ -35,6 +35,11 @@ server {
 		return 301 https://muck.gg/api/bot/discord/support;
 	}
 
+	location /github
+	{
+		return 301 https://muck.gg/api/bot/github/support;
+	}
+
 	location /api
 	{
 		proxy_set_header Host $host;

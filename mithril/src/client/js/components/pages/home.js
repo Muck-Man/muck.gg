@@ -39,7 +39,8 @@ class CustomPage extends Page
 				m('span', {class: 'small-text'}, 'no muck allowed'),
 				m('div', {class: 'btn-group'}, [
 					m('a', {href: '/invite', class: 'btn'}, 'Invite'),
-					m('a', {href: '/discord', class: 'btn'}, 'Discord')
+					m('a', {href: '/discord', class: 'btn'}, 'Discord'),
+					m('a', {href: '/github', class: 'btn'}, 'Github')
 				])
 			]),
 			m('div', {class: 'stats'}, [
