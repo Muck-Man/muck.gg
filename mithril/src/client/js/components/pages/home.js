@@ -1,6 +1,7 @@
 const m = require('mithril');
 
 const Page = require('../page');
+const Constants = require('../../utils').Constants;
 
 class CustomPage extends Page
 {
@@ -19,7 +20,6 @@ class CustomPage extends Page
 				method: 'get',
 				url: '/api/muck/stats'
 			}).then((data) => {
-				data.scores.sort((x, y) => x.type.localeCompare(y.type));
 				this.app.cache.set('muck.stats', data, 0);
 				resolve();
 			}).catch(reject);
@@ -28,9 +28,7 @@ class CustomPage extends Page
 
 	view()
 	{
-		const data = this.app.cache.get('muck.stats');
-
-		const date = 'yesterday';
+		const scores = this.app.cache.get('muck.stats');
 
 		return [
 			m('div', {class: 'head text-center'}, [
@@ -43,43 +41,42 @@ class CustomPage extends Page
 				])
 			]),
 			m('div', {class: 'stats'}, [
-				data.scores.map((score) => {
-					return m('div', {class: `stat ${score.type}`}, [
-						m('div', {class: 'title'}, [
-							m('h3', score.type.toTitleCase()),
-							m('span', `Total of ${score.data.count.toLocaleString()} messages since ${date}`)
-						]),
-						m('div', {class: 'sections'}, Object.keys(score.data).sort((x, y) => x.localeCompare(y)).map((attribute) => {
-							if (attribute === 'count') {return;}
+				m('div', {class: 'stat'}, [
+					m('div', {class: 'title'}, [
+						m('h3', 'Global Stats'),
+						m('span', `Total of ${scores.count.toLocaleString()} messages`)
+					]),
+					m('div', {class: 'sections'}, Object.keys(scores).sort((x, y) => x.localeCompare(y)).map((attribute) => {
+						if (attribute === 'count') {return;}
 
-							const stat = score.data[attribute];
+						const attr = Constants.PerspectiveAttributes[attribute.toUpperCase()];
+						const stat = scores[attribute];
 
-							const rgb = [
-								parseInt(255 * stat),
-								parseInt(255 * (1 - stat)),
-								0
-							];
+						const rgb = [
+							parseInt(255 * stat),
+							parseInt(255 * (1 - stat)),
+							0
+						];
 
-							return m('div', {class: 'section'}, [
-								m('span', attribute.toTitleCase()),
-								m('span', {class: 'percent'}, `${parseInt(stat * 100)}%`),
+						return m('div', {class: 'section', onclick: () => console.log(attr.description)}, [
+							m('span', attr.name),
+							m('span', {class: 'percent'}, `${parseInt(stat * 100)}%`),
+							m('div', {
+								class: 'progress',
+								style: `background-color: rgb(${rgb.join(', ')})`,
+							}, [
 								m('div', {
-									class: 'progress',
-									style: `background-color: rgb(${rgb.join(', ')})`,
-								}, [
-									m('div', {
-										class: 'progress-bar',
-										role: 'progressbar',
-										style: `width: ${100 - parseInt(stat * 100)}%`,
-										'aria-valuenow': parseInt(stat * 100),
-										'aria-valuemin': 0,
-										'aria-valuemax': 100
-									})
-								])
-							]);
-						}))
-					]);
-				})
+									class: 'progress-bar',
+									role: 'progressbar',
+									style: `width: ${100 - parseInt(stat * 100)}%`,
+									'aria-valuenow': parseInt(stat * 100),
+									'aria-valuemin': 0,
+									'aria-valuemax': 100
+								})
+							])
+						]);
+					}))
+				])
 			])
 		];
 	}

@@ -1,10 +1,10 @@
 class Cache extends Map
 {
-	constructor(lasts=0)
+	constructor(lasts)
 	{
 		super();
 
-		this.lasts = lasts;
+		this.lasts = lasts || 0;
 	}
 
 	delete(id)
@@ -17,21 +17,21 @@ class Cache extends Map
 	}
 
 	get(id)
-    {
+	{
 		return (super.has(id)) ? super.get(id).value : null;
-    }
+	}
 
-    set(id, value, lasts)
-    {
+	set(id, value, lasts)
+	{
 		if (lasts === undefined) {lasts = this.lasts;}
 
 		super.set(id, {
-            value,
-            expire: (lasts) ? setTimeout(() => {
+			value,
+			expire: (lasts) ? setTimeout(() => {
 				this.delete(id);
 			}, lasts * 1000) : null
 		});
-    }
+	}
 }
 
 module.exports = Cache;
