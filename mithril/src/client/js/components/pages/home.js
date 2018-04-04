@@ -28,7 +28,9 @@ class CustomPage extends Page
 
 	view()
 	{
-		const scores = this.app.cache.get('muck.stats');
+		const data = this.app.cache.get('muck.stats');
+
+		const started = new Date(data.started * 1000);
 
 		return [
 			m('div', {class: 'head text-center'}, [
@@ -44,13 +46,14 @@ class CustomPage extends Page
 				m('div', {class: 'stat'}, [
 					m('div', {class: 'title'}, [
 						m('h3', 'Global Stats'),
-						m('span', `Total of ${scores.count.toLocaleString()} messages`)
+						m('span', `Total of ${data.count.toLocaleString()} messages`),
+						m('span', `Started analyzing on ${started.toDateString()} at ${started.toTimeString()}`) //better time format, maybe use moment, but it adds like 50kb lol
 					]),
-					m('div', {class: 'sections'}, Object.keys(scores).sort((x, y) => x.localeCompare(y)).map((attribute) => {
+					m('div', {class: 'sections'}, Object.keys(data.scores).sort((x, y) => x.localeCompare(y)).map((attribute) => {
 						if (attribute === 'count') {return;}
 
 						const attr = Constants.PerspectiveAttributes[attribute.toUpperCase()];
-						const stat = scores[attribute];
+						const stat = data.scores[attribute];
 
 						const rgb = [
 							parseInt(255 * stat),

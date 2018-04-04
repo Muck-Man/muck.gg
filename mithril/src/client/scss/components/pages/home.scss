@@ -46,6 +46,10 @@
 			@extend .align-items-center;
 
 			.title {
+				@extend .d-flex;
+				@extend .flex-column;
+				@extend .justify-content-center;
+
 				span {
 					color: rgb(114, 107, 87);
 				}

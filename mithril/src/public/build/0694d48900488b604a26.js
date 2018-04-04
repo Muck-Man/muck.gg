@@ -137,14 +137,25 @@ eval("const m = __webpack_require__(/*! mithril */ \"./node_modules/mithril/mith
 
 /***/ }),
 
+/***/ "./src/client/js/components/page.js":
+/*!******************************************!*\
+  !*** ./src/client/js/components/page.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const m = __webpack_require__(/*! mithril */ \"./node_modules/mithril/mithril.js\");\r\n\r\nclass Page\r\n{\r\n\tconstructor(app, options)\r\n\t{\r\n\t\tthis.app = app;\r\n\r\n\t\toptions = options || {};\r\n\r\n\t\tthis.auth = options.auth || false;\r\n\t\tthis.class = ['page', options.class || null].filter((v)=>v).join(' ');\r\n\r\n\t\tthis.path = options.path;\r\n\t}\r\n\r\n\tonmatch(args, requestedPath)\r\n\t{\r\n\t\treturn Promise.resolve().then(() => {\r\n\t\t\tif (!this.auth || this.app.authed) {\r\n\t\t\t\treturn this.init && this.init(args, requestedPath);\r\n\t\t\t}\r\n\r\n\t\t\tif (localStorage.token) {localStorage.removeItem('token');}\r\n\r\n\t\t\treturn Promise.reject('/auth/login');\r\n\t\t}).then(() => {\r\n\t\t\treturn new Promise((resolve) => {\r\n\t\t\t\tif (this.app.pagedelay) {\r\n\t\t\t\t\tsetTimeout(() => {\r\n\t\t\t\t\t\tresolve(this);\r\n\t\t\t\t\t}, this.app.pagedelay);\r\n\t\t\t\t} else {\r\n\t\t\t\t\tresolve(this);\r\n\t\t\t\t}\r\n\t\t\t});\r\n\t\t}).catch((path) => {\r\n\t\t\treturn m.route.set(path);\r\n\t\t});\r\n\t}\r\n\r\n\trender(vnode)\r\n\t{\r\n\t\treturn [m('div', {class: this.class}, vnode)];\r\n\t}\r\n}\r\n\r\nmodule.exports = Page;\n\n//# sourceURL=webpack:///./src/client/js/components/page.js?");
+
+/***/ }),
+
 /***/ "./src/client/js/components/pages/home.js":
 /*!************************************************!*\
   !*** ./src/client/js/components/pages/home.js ***!
   \************************************************/
 /*! no static exports found */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-eval("throw new Error(\"Module parse failed: Unexpected token (78:4)\\nYou may need an appropriate loader to handle this file type.\\n| \\t\\t\\t\\t\\t\\t]);\\r\\n| \\t\\t\\t\\t\\t})\\r\\n| \\t\\t\\t\\t])\\r\\n| \\t\\t\\t])\\r\\n| \\t\\t];\\r\");\n\n//# sourceURL=webpack:///./src/client/js/components/pages/home.js?");
+eval("const m = __webpack_require__(/*! mithril */ \"./node_modules/mithril/mithril.js\");\r\n\r\nconst Page = __webpack_require__(/*! ../page */ \"./src/client/js/components/page.js\");\r\nconst Constants = __webpack_require__(/*! ../../utils */ \"./src/client/js/utils/index.js\").Constants;\r\n\r\nclass CustomPage extends Page\r\n{\r\n\tconstructor(app)\r\n\t{\r\n\t\tsuper(app, {\r\n\t\t\tpath: '/',\r\n\t\t\tclass: 'home'\r\n\t\t});\r\n\t}\r\n\r\n\tinit(args, requestedPath)\r\n\t{\r\n\t\treturn new Promise((resolve, reject) => {\r\n\t\t\tthis.app.rest.request({\r\n\t\t\t\tmethod: 'get',\r\n\t\t\t\turl: '/api/muck/stats'\r\n\t\t\t}).then((data) => {\r\n\t\t\t\tthis.app.cache.set('muck.stats', data, 0);\r\n\t\t\t\tresolve();\r\n\t\t\t}).catch(reject);\r\n\t\t});\r\n\t}\r\n\r\n\tview()\r\n\t{\r\n\t\tconst data = this.app.cache.get('muck.stats');\r\n\r\n\t\tconst started = new Date(data.started * 1000);\r\n\r\n\t\treturn [\r\n\t\t\tm('div', {class: 'head text-center'}, [\r\n\t\t\t\tm('img', {src: '/assets/images/logo.png', style: 'height: 128px; width: 128px;'}),\r\n\t\t\t\tm('h1', 'Muck Man'),\r\n\t\t\t\tm('span', {class: 'small-text'}, 'no muck allowed'),\r\n\t\t\t\tm('div', {class: 'btn-group'}, [\r\n\t\t\t\t\tm('a', {href: '/invite', class: 'btn'}, 'Invite'),\r\n\t\t\t\t\tm('a', {href: '/discord', class: 'btn'}, 'Discord')\r\n\t\t\t\t])\r\n\t\t\t]),\r\n\t\t\tm('div', {class: 'stats'}, [\r\n\t\t\t\tm('div', {class: 'stat'}, [\r\n\t\t\t\t\tm('div', {class: 'title'}, [\r\n\t\t\t\t\t\tm('h3', 'Global Stats'),\r\n\t\t\t\t\t\tm('span', `Total of ${data.count.toLocaleString()} messages`),\r\n\t\t\t\t\t\tm('span', `Started analyzing on ${started.toDateString()} at ${started.toTimeString()}`) //better time format, maybe use moment, but it adds like 50kb lol\r\n\t\t\t\t\t]),\r\n\t\t\t\t\tm('div', {class: 'sections'}, Object.keys(data.scores).sort((x, y) => x.localeCompare(y)).map((attribute) => {\r\n\t\t\t\t\t\tif (attribute === 'count') {return;}\r\n\r\n\t\t\t\t\t\tconst attr = Constants.PerspectiveAttributes[attribute.toUpperCase()];\r\n\t\t\t\t\t\tconst stat = data.scores[attribute];\r\n\r\n\t\t\t\t\t\tconst rgb = [\r\n\t\t\t\t\t\t\tparseInt(255 * stat),\r\n\t\t\t\t\t\t\tparseInt(255 * (1 - stat)),\r\n\t\t\t\t\t\t\t0\r\n\t\t\t\t\t\t];\r\n\r\n\t\t\t\t\t\treturn m('div', {class: 'section', onclick: () => console.log(attr.description)}, [\r\n\t\t\t\t\t\t\tm('span', attr.name),\r\n\t\t\t\t\t\t\tm('span', {class: 'percent'}, `${parseInt(stat * 100)}%`),\r\n\t\t\t\t\t\t\tm('div', {\r\n\t\t\t\t\t\t\t\tclass: 'progress',\r\n\t\t\t\t\t\t\t\tstyle: `background-color: rgb(${rgb.join(', ')})`,\r\n\t\t\t\t\t\t\t}, [\r\n\t\t\t\t\t\t\t\tm('div', {\r\n\t\t\t\t\t\t\t\t\tclass: 'progress-bar',\r\n\t\t\t\t\t\t\t\t\trole: 'progressbar',\r\n\t\t\t\t\t\t\t\t\tstyle: `width: ${100 - parseInt(stat * 100)}%`,\r\n\t\t\t\t\t\t\t\t\t'aria-valuenow': parseInt(stat * 100),\r\n\t\t\t\t\t\t\t\t\t'aria-valuemin': 0,\r\n\t\t\t\t\t\t\t\t\t'aria-valuemax': 100\r\n\t\t\t\t\t\t\t\t})\r\n\t\t\t\t\t\t\t])\r\n\t\t\t\t\t\t]);\r\n\t\t\t\t\t}))\r\n\t\t\t\t])\r\n\t\t\t])\r\n\t\t];\r\n\t}\r\n}\r\n\r\nmodule.exports = CustomPage;\n\n//# sourceURL=webpack:///./src/client/js/components/pages/home.js?");
 
 /***/ }),
 

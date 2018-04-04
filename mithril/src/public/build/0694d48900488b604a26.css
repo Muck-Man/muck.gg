@@ -4311,7 +4311,7 @@ button.bg-dark:focus {
 .d-table-cell {
   display: table-cell !important; }
 
-.d-flex, .page.home .head, .page.home .head .btn-group, .page.home .stats, .page.home .stats .stat, .page.home .stats .stat .sections, .page.home .stats .stat .sections .section {
+.d-flex, .page.home .head, .page.home .head .btn-group, .page.home .stats, .page.home .stats .stat, .page.home .stats .stat .title, .page.home .stats .stat .sections, .page.home .stats .stat .sections .section {
   display: flex !important; }
 
 .d-inline-flex {
@@ -4454,7 +4454,7 @@ button.bg-dark:focus {
 .flex-row, .page.home .head .btn-group, .page.home .stats .stat .sections {
   flex-direction: row !important; }
 
-.flex-column, .page.home .head, .page.home .stats, .page.home .stats .stat, .page.home .stats .stat .sections .section {
+.flex-column, .page.home .head, .page.home .stats, .page.home .stats .stat, .page.home .stats .stat .title, .page.home .stats .stat .sections .section {
   flex-direction: column !important; }
 
 .flex-row-reverse {
@@ -4478,7 +4478,7 @@ button.bg-dark:focus {
 .justify-content-end {
   justify-content: flex-end !important; }
 
-.justify-content-center, .page.home .stats .stat .sections .section {
+.justify-content-center, .page.home .stats .stat .title, .page.home .stats .stat .sections .section {
   justify-content: center !important; }
 
 .justify-content-between {
